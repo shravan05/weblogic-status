@@ -1,0 +1,43 @@
+---
+# Ansible script to search and replace JDBC ID's on target servers.
+#Usage: ansible-playbook -i inventory SellingDeploymentReport.yml -l <envType>
+#Usage: ansible-playbook -i inventory SellingDeploymentReport.yml -l DEV
+##Anudeep Seri - 04/03/2018
+
+- hosts: Liferay
+  remote_user: '{{ mi_user }}'
+
+  vars_files:
+    - ./vars/passwd.yml
+
+  tasks:
+
+  - name: create output file
+    file: path={{workspace}}/results.txt state=touch
+    register: fileCreate
+    delegate_to: localhost
+
+  - name: Setting env for Weblogic
+    shell: cd {{domainDir}}/bin && sh setDomainEnv.sh
+    become: yes
+    become_user: oracle
+    become_method: sudo
+    register: resCmd
+
+  - name: Setting env for wls
+    shell: cd {{wlsDir}}/bin && . ./setWLSEnv.sh
+    become: yes
+    become_user: oracle
+    become_method: sudo
+
+  - name: Executing wlst script for Weblogic status
+    shell: java weblogic.WLST serverstatus.py {{weblogicUser}} {{weblogicPass}}
+    become: yes
+    become_user: oracle
+    become_method: sudo
+    register: resCmd
+
+  - name: print weblogic status to results file
+    shell: echo "Created file info with Timestamp - {{resCmd.stdout}}" >> {{workspace}}/results.txt
+    when: not(resCmd|skipped)
+    delegate_to: localhost

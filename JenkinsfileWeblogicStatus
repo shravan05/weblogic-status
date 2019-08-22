@@ -1,0 +1,94 @@
+#!/usr/bin/env groovy
+
+/*
+
+**Jenkins File creating a test file using Oracle user for all the Environments
+**Author - Shravan
+**Version 1.0
+
+*/
+
+node {
+
+deleteDir()
+
+LIFERAY_ENV = "${ENVIRONMENT}";
+SOA_ENV = "${ENVIRONMENT}".toLowerCase();
+OPA_ENV = "${ENVIRONMENT}".toLowerCase();
+
+if(APPLICATION.contains("LIFERAY")){
+  PB = "LiferayWeblogicStatus.yml"
+  EnvType = "linux/${LIFERAY_ENV}"
+}else if(APPLICATION.contains("SOA")){
+  PB = "SOAWeblogicStatus.yml"
+  EnvType = "${SOA_ENV}"
+}else if(APPLICATION.contains("OPA")){
+  PB = "OpaWeblogicStatus.yml"
+  EnvType = "opa/${OPA_ENV}"
+}else{
+  PB = ""
+  CO = ""
+}
+
+stage('git checkout') {
+
+if(APPLICATION.contains("LIFERAY")){
+checkout([$class: 'GitSCM', branches: [[name: 'master']], doGenerateSubmoduleConfigurations: false, extensions: [],
+gitTool: 'GIT-Linux', submoduleCfg: [], userRemoteConfigs: [[credentialsId: '1e4a5fd7-709e-4fa5-8ade-aa90d4c55dab',
+url: 'https://github.com/shravan05/weblogic-status']]])
+} else {
+checkout([$class: 'GitSCM', branches: [[name: 'master']], doGenerateSubmoduleConfigurations: false, extensions: [],
+gitTool: 'GIT-Linux', submoduleCfg: [], userRemoteConfigs: [[credentialsId: '1e4a5fd7-709e-4fa5-8ade-aa90d4c55dab',
+url: 'https://github.com/shravan05/weblogic-status']]]) }
+}
+
+stage ('playbook run') {
+timestamps{
+try {
+
+//	notifyBuild('STARTED')
+
+	ansiblePlaybook(
+	    playbook: "${workspace}/ansible_scripts/${PB}",
+	    inventory: "${workspace}/ansible_scripts/inventory/${EnvType}",
+	    colorizedOutput: true,
+	    extras: "-e workspace=${workspace} -e application_name=${APPLICATION} -e --private-key=~/.ssh/id_rsa")
+
+
+
+ stage ('PrintResult'){
+
+ if(!fileExists('results.txt')) {
+
+	 sh 'echo results.txt doesnot exists'
+
+	 }
+ else {
+
+    sh 'cat ${WORKSPACE}/results.txt'
+}
+}
+}catch (e) {
+  	    currentBuild.result = "FAILED"
+  	    throw e
+  	    } finally {
+  	    notifyBuild(currentBuild.result)
+  	}
+  }
+}
+}
+
+def notifyBuild(String buildStatus = 'STARTED') {
+// build status of null means successful
+buildStatus =  buildStatus ?: 'SUCCESSFUL'
+
+	emailext(
+	attachLog: true,
+	attachmentsPattern: 'results.txt',
+	to: '${EmailAddress}',
+	subject: "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+	mimeType: 'text/html',
+	body: "Check Console output at $BUILD_URL to view the logs.",
+	recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+		)
+}

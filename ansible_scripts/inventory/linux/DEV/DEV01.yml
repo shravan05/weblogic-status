@@ -1,0 +1,16 @@
+[DEV01]
+#Lifeary
+Dev01LiferayAServer   ansible_ssh_host=165.22.45.221   ansible_connection=ssh   ansible_user=sdasari
+
+[Liferay]
+Dev01LiferayAServer
+
+[DEV01:vars]
+deploy_user=oracle
+mi_user=sdasari
+baseDir=/u01/app/oracle
+ansible_become_user=oracle
+ansible_become_method=sudo
+ansible_become_pass= "{{ vault_sdasari_sudo_password }}"
+weblogicUser= weblogic
+weblogicPass= "{{ vault_weblogic_pass }}"
