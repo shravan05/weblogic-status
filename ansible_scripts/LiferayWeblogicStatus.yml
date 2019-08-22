@@ -31,7 +31,7 @@
     become_method: sudo
 
   - name: Executing wlst script for Weblogic status
-    shell: java weblogic.WLST serverstatus.py {{weblogicUser}} {{weblogicPass}}
+    shell: sh "java weblogic.WLST serverstatus.py" {{weblogicUser}} {{weblogicPass}}
     become: yes
     become_user: oracle
     become_method: sudo
