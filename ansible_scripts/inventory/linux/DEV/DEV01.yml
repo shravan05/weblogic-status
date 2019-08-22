@@ -14,3 +14,5 @@ ansible_become_method=sudo
 ansible_become_pass= "{{ vault_sdasari_sudo_password }}"
 weblogicUser= weblogic
 weblogicPass= "{{ vault_weblogic_pass }}"
+domainDir= /u01/app/oracle/Middleware/Oracle_Home/user_projects/domains/base_domain
+wlsDir= /u01/app/oracle/Middleware/Oracle_Home/wlserver/server
