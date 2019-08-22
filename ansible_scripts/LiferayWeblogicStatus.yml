@@ -17,21 +17,8 @@
     register: fileCreate
     delegate_to: localhost
 
-  - name: Setting env for Weblogic
-    shell: cd {{domainDir}}/bin && sh setDomainEnv.sh
-    become: yes
-    become_user: oracle
-    become_method: sudo
-    register: resCmd
-
-  - name: Setting env for wls
-    shell: cd {{wlsDir}}/bin && . ./setWLSEnv.sh
-    become: yes
-    become_user: oracle
-    become_method: sudo
-
   - name: Executing wlst script for Weblogic status
-    shell: cd {{wlsDir}}/bin && sh java weblogic.WLST serverstatus.py {{weblogicUser}} {{weblogicPass}}
+    shell: cd {{wlsDir}}/bin && sh serverstatus.sh {{weblogicUser}} {{weblogicPass}}
     become: yes
     become_user: oracle
     become_method: sudo
