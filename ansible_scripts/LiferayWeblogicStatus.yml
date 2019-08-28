@@ -37,7 +37,7 @@
     become_user: oracle
     become_method: sudo
 
-  - name: Start Managed Server - managed1
+  - name: Starting Managed Server - managed1
     shell: cd {{domainDir}}/bin; nohup sh startManagedWebLogic.sh managed1 > managed1.log &
     become: yes
     become_user: oracle
@@ -47,7 +47,7 @@
     wait_for:
       path: '{{domainDir}}/bin/managed1.log'
       search_regex: RUNNING
-    become:yes
+    become: yes
     become_user: oracle
     become_method: sudo
 
