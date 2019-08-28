@@ -37,6 +37,11 @@
     become_user: oracle
     become_method: sudo
 
+  - name: Start Managed Server - managed1
+    command: "nohup startManagedWebLogic.sh managed1 &"
+    args: 
+      chdir: "{{domainDir}}/bin"
+
   - name: Executing wlst script for Weblogic status
     shell: cd {{wlsDir}}/bin && sh serverstatus.sh {{weblogicUser}} {{weblogicPass}}
     become: yes
