@@ -28,7 +28,7 @@
 
   - name: Cleaning tmp & cache directories for Managed Server managed1
     file: 
-      path: {{domainDir}}/servers/managed1/"{{ item }}"
+      path: '{{domainDir}}/servers/managed1/{{ item }}'
       state: absent
     with_items:
       - tmp
