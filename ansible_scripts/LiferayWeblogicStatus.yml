@@ -1,8 +1,8 @@
 ---
-# Ansible script to search and replace JDBC ID's on target servers.
-#Usage: ansible-playbook -i inventory SellingDeploymentReport.yml -l <envType>
-#Usage: ansible-playbook -i inventory SellingDeploymentReport.yml -l DEV
-##Anudeep Seri - 04/03/2018
+# Ansible script to do clean restart weblogic on target servers.
+#Usage: ansible-playbook -i inventory Liferayweblogicstatus.yml -l <envType>
+#Usage: ansible-playbook -i inventory Liferayweblogucstatus.yml -l DEV
+##power devops- 
 
 - hosts: Liferay
   remote_user: '{{ mi_user }}'
