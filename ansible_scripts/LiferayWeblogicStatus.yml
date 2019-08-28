@@ -18,7 +18,7 @@
     delegate_to: localhost
 
   - name: Stopping Managed Server managed1
-    shell: cd {{domainDir}}/bin && sh stopManagedWeblogic.sh managed1
+    shell: cd {{domainDir}}/bin && sh stopManagedWebLogic.sh managed1
     become: yes
     become_user: oracle
     become_method: sudo
