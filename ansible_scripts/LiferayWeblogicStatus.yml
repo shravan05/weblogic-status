@@ -43,6 +43,14 @@
     become_user: oracle
     become_method: sudo
 
+  - name: Wait until managed server managed1 comes to RUNNING Mode
+    wait_for:
+      path: '{{domainDir}}/bin/managed1.log'
+      search_regex: RUNNING
+    become:yes
+    become_user: oracle
+    become_method: sudo
+
   - name: Executing wlst script for Weblogic status
     shell: cd {{wlsDir}}/bin && sh serverstatus.sh {{weblogicUser}} {{weblogicPass}}
     become: yes
