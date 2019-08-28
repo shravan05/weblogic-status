@@ -22,6 +22,7 @@
     become: yes
     become_user: oracle
     become_method: sudo
+    ignore_errors: yes
 
   - name: Executing wlst script for Weblogic status
     shell: cd {{wlsDir}}/bin && sh serverstatus.sh {{weblogicUser}} {{weblogicPass}}
