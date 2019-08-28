@@ -17,6 +17,12 @@
     register: fileCreate
     delegate_to: localhost
 
+  - name: Stopping Managed Server managed1
+    shell: cd {{domainDir}}/bin && sh stopManagedWeblogic.sh managed1
+    become: yes
+    become_user: oracle
+    become_method: sudo
+
   - name: Executing wlst script for Weblogic status
     shell: cd {{wlsDir}}/bin && sh serverstatus.sh {{weblogicUser}} {{weblogicPass}}
     become: yes
