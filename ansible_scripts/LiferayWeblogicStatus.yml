@@ -4,7 +4,7 @@
 #Usage: ansible-playbook -i inventory Liferayweblogucstatus.yml -l DEV
 ##power devops- 
 
-- hosts: Liferay
+- hosts: all
   remote_user: '{{ mi_user }}'
 
   vars_files:
