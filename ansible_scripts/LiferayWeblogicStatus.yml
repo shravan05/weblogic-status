@@ -5,7 +5,7 @@
 ##power devops- 
 
 - hosts: all
-  remote_user: '{{ mi_user }}'
+  remote_user: '{{ ansible_user }}'
 
   vars_files:
     - ./vars/passwd.yml
