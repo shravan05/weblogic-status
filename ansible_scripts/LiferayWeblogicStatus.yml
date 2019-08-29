@@ -18,13 +18,16 @@
     delegate_to: localhost
 
 
-  - name:  Stopping Managed Server managed1  
-    shell: cd {{domainDir}}/bin && sh stopManagedWebLogic.sh managed1
+  - name:  Stopping Managed Servers on node1
+    shell: cd {{domainDir}}/bin && sh stopManagedWebLogic.sh {{ item }}
+    with_items: 
+      - managed1
+      - managed2
     become: yes
     become_user: oracle
     become_method: sudo
     ignore_errors: yes
-
+    when: inventory in groups['Node1']
 
   - name: Cleaning tmp & cache directories for Managed Server managed1
     file: 
