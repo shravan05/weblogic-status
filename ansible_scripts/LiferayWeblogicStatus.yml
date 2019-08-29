@@ -51,7 +51,7 @@
     become: yes
     become_user: oracle
     become_method: sudo
-    when:inventory_hostname in groups['Node1']
+    when: inventory_hostname in groups['Node1']
     run_once: true
 
 
