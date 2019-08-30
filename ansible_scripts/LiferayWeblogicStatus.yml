@@ -83,3 +83,4 @@
     shell: echo "Created file info with Timestamp - {{resCmd.stdout}}" >> {{workspace}}/results.txt
     when: not(resCmd|skipped)
     delegate_to: localhost
+    run_once: true
