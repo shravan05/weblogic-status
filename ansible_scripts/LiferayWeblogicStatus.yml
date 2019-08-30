@@ -35,8 +35,10 @@
       path: '{{domainDir}}/servers/{{ item.servers }}/{{ item.deles }}'
       state: absent
     with_items:
-      - { servers: 'managed1', 'managed2' }
-      - { deles: 'tmp', 'cache'}
+      - { servers: 'managed1', deles: 'tmp' }
+      - { servers: 'managed1', deles: 'cache' }
+      - { servers: 'managed2', deles: 'tmp' }
+      - { servers: 'managed2', deles: 'cache' }
     become: yes
     become_user: oracle
     become_method: sudo
