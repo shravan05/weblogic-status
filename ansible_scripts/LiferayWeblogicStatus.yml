@@ -2,7 +2,7 @@
 # Ansible script to do clean restart weblogic on target servers.
 #Usage: ansible-playbook -i inventory Liferayweblogicstatus.yml -l <envType>
 #Usage: ansible-playbook -i inventory Liferayweblogucstatus.yml -l DEV
-##power devops- 
+##power devops-
 
 - hosts: all
   remote_user: '{{ mi_user }}'
@@ -20,7 +20,7 @@
 
   - name:  Stopping Managed Servers on node1
     shell: cd {{domainDir}}/bin && sh stopManagedWebLogic.sh {{ item }}
-    with_items: 
+    with_items:
       - managed1
       - managed2
     become: yes
@@ -31,12 +31,12 @@
     run_once: true
 
   - name: Cleaning tmp & cache directories for Managed Server managed1
-    file: 
+    file:
       path: '{{domainDir}}/servers/{{ item.servers }}/{{ item.deles }}'
       state: absent
     with_items:
-      - { servers: managed1, managed2 }
-      - { deles: tmp, cache}
+      - { servers: 'managed1', 'managed2' }
+      - { deles: 'tmp', 'cache'}
     become: yes
     become_user: oracle
     become_method: sudo
