@@ -17,11 +17,11 @@ managed3
 
 [Node1]
 aserver
-mserver1
-mserver2
+managed1
+managed2
 
 [Node2]
-mserver3
+managed3
 
 
 
