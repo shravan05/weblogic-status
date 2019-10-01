@@ -17,7 +17,8 @@
 
   - name: Deployment facts
     debug: msg="list of files are {{ item }}"
-    with_items: {{ file_contents }}
+    with_items:
+      - {{ file_contents }}
 
   - name: create output file
     file: path={{workspace}}/results.txt state=touch
