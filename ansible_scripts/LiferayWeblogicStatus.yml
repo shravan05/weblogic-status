@@ -7,10 +7,17 @@
 - hosts: all
   remote_user: '{{ mi_user }}'
 
+  vars:
+  file_contents: "{{lookup('file', 'contents.txt')}}"
+
   vars_files:
     - ./vars/passwd.yml
 
   tasks:
+
+  - name: Deployment facts
+    debug: msg="list of files are {{ item }}"
+    with_items: {{ file_contents }}
 
   - name: create output file
     file: path={{workspace}}/results.txt state=touch
